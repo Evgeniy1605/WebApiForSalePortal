@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SalePortal.Data;
+using WebApi__.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseHttpsRedirection();
 
