@@ -15,5 +15,8 @@ namespace SalePortal.Data
         public DbSet<CommodityEntity> commodities { get; set; }
 
         public DbSet<AdminEntity> admins { get; set; }
+        public DbSet<CommodityOrderEntity> CommodityOrders { get; set; }
+        public DbSet<MessageEntity> Messages { get; set; }
+        public DbSet<ChatEntity> Chats { get; set; }
     }
 }

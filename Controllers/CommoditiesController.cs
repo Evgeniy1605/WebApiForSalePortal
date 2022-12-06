@@ -105,7 +105,41 @@ namespace WebApiForSalePortal.Controllers
             {
                 return NotFound();
             }
+            //
+            var orders = await _context.CommodityOrders.Where(x => x.CommodityId == commodityEntity.Id).ToListAsync();
+            if (orders.Count !=0)
+            {
+                foreach (var item in orders)
+                {
+                    _context.Remove(item);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            //
+            var chats = await _context.Chats.Where(x => x.CommodityId ==id).ToListAsync();
+            if (chats.Count !=0)
+            {
+                foreach (var item in chats)
+                {
+                    var messeges = await _context.Messages.Where(x => x.ChatId == item.Id).ToListAsync();
+                    if (messeges.Count != 0)
+                    {
+                        foreach (var m in messeges)
+                        {
+                            _context.Messages.Remove(m);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                    var chat = await _context.Chats.SingleOrDefaultAsync(x => x.Id == item.Id);
+                    if (chat != null)
+                    {
+                        _context.Chats.Remove(chat);
+                        await _context.SaveChangesAsync();
+                    }
 
+                }
+            }
+            //
             _context.commodities.Remove(commodityEntity);
             await _context.SaveChangesAsync();
 
