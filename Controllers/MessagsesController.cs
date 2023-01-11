@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace WebApiForSalePortal.Controllers
 
         // GET: api/Messagses
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<MessageEntity>>> GetMessages()
         {
             
@@ -31,6 +33,7 @@ namespace WebApiForSalePortal.Controllers
 
         // GET: api/Messagses/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<MessageEntity>> GetMessageEntity(int id)
         {
             var messageEntity = await _context.Messages.Include(x => x.Sender).Include(x => x.Chat).SingleOrDefaultAsync(x => x.Id == id);
@@ -46,6 +49,7 @@ namespace WebApiForSalePortal.Controllers
         // PUT: api/Messagses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutMessageEntity(int id, MessageEntity messageEntity)
         {
             if (id != messageEntity.Id || messageEntity.SenderId == 0|| messageEntity.ChatId == 0)
@@ -85,6 +89,7 @@ namespace WebApiForSalePortal.Controllers
         // POST: api/Messagses
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<MessageEntity>> PostMessageEntity(MessageEntity messageEntity)
         {
             if (messageEntity.SenderId == 0 || messageEntity.ChatId == 0)
@@ -109,6 +114,7 @@ namespace WebApiForSalePortal.Controllers
 
         // DELETE: api/Messagses/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteMessageEntity(int id)
         {
             var messageEntity = await _context.Messages.FindAsync(id);

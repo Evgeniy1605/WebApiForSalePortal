@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace WebApiForSalePortal.Controllers
         }
 
         // GET: api/Chats
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ChatEntity>>> GetChats()
         {
@@ -33,6 +35,7 @@ namespace WebApiForSalePortal.Controllers
 
         // GET: api/Chats/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<ChatEntity>> GetChatEntity(int id)
         {
             var chatEntity = await _context.Chats.Include(x => x.Commodity)
@@ -50,6 +53,7 @@ namespace WebApiForSalePortal.Controllers
         // POST: api/Chats
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<ChatEntity>> PostChatEntity(ChatEntity chatEntity)
         {
             if (chatEntity == null || chatEntity.CommodityId == 0 || chatEntity.SellerId == 0 || chatEntity.CustomerId == 0) { return BadRequest(); }
@@ -77,6 +81,7 @@ namespace WebApiForSalePortal.Controllers
         
         // DELETE: api/Chats/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteChatEntity(int id)
         {
             var chatEntity = await _context.Chats.FindAsync(id);
