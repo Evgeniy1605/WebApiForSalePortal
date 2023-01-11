@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SalePortal.Data;
+using System.Text;
 using WebApi__.Middleware;
 using WebApiForSalePortal.Services;
 
@@ -15,7 +18,18 @@ builder.Services.AddDbContext<SalePortalDbConnection>(options =>
 });
 builder.Services.AddTransient<IIndentityService, IndentityService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                builder.Configuration.GetSection("TokenKey").Value)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -27,6 +41,7 @@ app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
