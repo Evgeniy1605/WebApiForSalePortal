@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SalePortal.Data;
 using WebApi__.Middleware;
+using WebApiForSalePortal.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,8 @@ builder.Services.AddDbContext<SalePortalDbConnection>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
 });
-
+builder.Services.AddTransient<IIndentityService, IndentityService>();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 
