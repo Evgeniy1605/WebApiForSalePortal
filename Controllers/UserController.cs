@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalePortal.Data;
 using SalePortal.Entities;
+using WebApiForSalePortal.Services;
 
 namespace WebApiForSalePortal.Controllers
 {
@@ -15,12 +17,20 @@ namespace WebApiForSalePortal.Controllers
     public class UserController : ControllerBase
     {
         private readonly SalePortalDbConnection _context;
+        private readonly IIndentityService _indentityService;
 
-        public UserController(SalePortalDbConnection context)
+        public UserController(SalePortalDbConnection context, IIndentityService indentityService)
         {
             _context = context;
+            _indentityService = indentityService;
         }
-
+        [HttpGet]
+        [Route("Validation")]
+        public async Task<IActionResult> ValidateUser(string userName, string password)
+        {
+            var user = await _indentityService.ValidateUserAsync(userName, password);
+            return Ok(user);
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserEntity>>> GetUsers()

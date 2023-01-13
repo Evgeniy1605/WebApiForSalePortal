@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace WebApiForSalePortal.Controllers
 
         // GET: api/Orders
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<CommodityOrderEntity>>> GetCommodityOrders()
         {
             return await _context.CommodityOrders
@@ -33,6 +35,7 @@ namespace WebApiForSalePortal.Controllers
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<CommodityOrderEntity>> GetCommodityOrderEntity(int id)
         {
             if (id == 0 || id < 0 )
@@ -54,6 +57,7 @@ namespace WebApiForSalePortal.Controllers
 
         // PUT: api/Orders/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutCommodityOrderEntity(int id, CommodityOrderEntity commodityOrderEntity)
         {
             if (id != commodityOrderEntity.Id || commodityOrderEntity.CommodityId == 0 || commodityOrderEntity.CommodityOwnerId == 0 || commodityOrderEntity.CustomerId == 0 || commodityOrderEntity.CommodityOwnerId == 0)
@@ -95,6 +99,7 @@ namespace WebApiForSalePortal.Controllers
 
         // POST: api/Orders
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<CommodityOrderEntity>> PostCommodityOrderEntity(CommodityOrderEntity commodityOrderEntity)
         {
             var customer = await _context.Users.SingleOrDefaultAsync(x => x.Id == commodityOrderEntity.CustomerId);
@@ -118,6 +123,7 @@ namespace WebApiForSalePortal.Controllers
 
         // DELETE: api/Orders/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCommodityOrderEntity(int id)
         {
             var commodityOrderEntity = await _context.CommodityOrders.FindAsync(id);

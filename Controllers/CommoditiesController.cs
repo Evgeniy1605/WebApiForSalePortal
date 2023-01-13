@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,7 @@ namespace WebApiForSalePortal.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutCommodityEntity(int id, CommodityEntity commodityEntity)
         {
             if (id != commodityEntity.Id)
@@ -81,6 +83,7 @@ namespace WebApiForSalePortal.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<CommodityEntity>> PostCommodityEntity(CommodityEntity commodityEntity)
         {
             var type = await _context.Categories.SingleOrDefaultAsync(x => x.Id == commodityEntity.TypeId);
@@ -98,6 +101,7 @@ namespace WebApiForSalePortal.Controllers
 
       
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCommodityEntity(int id)
         {
             var commodityEntity = await _context.commodities.FindAsync(id);

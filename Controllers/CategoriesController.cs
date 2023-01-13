@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,7 @@ namespace WebApiForSalePortal.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> PutCategoryEntity(int id, CategoryEntity categoryEntity)
         {
             if (id != categoryEntity.Id)
@@ -74,6 +76,7 @@ namespace WebApiForSalePortal.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<CategoryEntity>> PostCategoryEntity(CategoryEntity categoryEntity)
         {
             _context.Categories.Add(categoryEntity);
@@ -83,6 +86,7 @@ namespace WebApiForSalePortal.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategoryEntity(int id)
         {
             var categoryEntity = await _context.Categories.FindAsync(id);
