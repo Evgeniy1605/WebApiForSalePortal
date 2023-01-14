@@ -19,6 +19,7 @@ namespace SalePortal.Entities
         public CommodityEntity? Commodity { get; set; }
 
         public bool ApprovedByOwner { get; set; } = false;
+        public string? Delivery { get; set; }
 
     }
 }
