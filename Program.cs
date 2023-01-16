@@ -30,6 +30,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
+builder.Services.AddTransient<INovaPoshtaService, NovaPoshtaService>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
