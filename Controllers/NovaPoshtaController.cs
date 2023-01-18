@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApiForSalePortal.Services;
 
@@ -14,6 +15,7 @@ namespace WebApiForSalePortal.Controllers
             _novaPoshtaService = novaPoshtaService;
         }
         [HttpGet]
+        [Authorize]
         public async ValueTask<IActionResult> GetAdressesByCityName(string cityName)
         {
 
