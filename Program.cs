@@ -32,6 +32,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddTransient<INovaPoshtaService, NovaPoshtaService>();
+builder.Services.AddTransient<ITranslator, Translator>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

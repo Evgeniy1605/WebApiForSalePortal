@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalePortal.Data;
 using SalePortal.Entities;
+using WebApiForSalePortal.Services;
 
 namespace WebApiForSalePortal.Controllers
 {
@@ -16,10 +17,12 @@ namespace WebApiForSalePortal.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly SalePortalDbConnection _context;
+        private readonly ITranslator _translator;
 
-        public OrdersController(SalePortalDbConnection context)
+        public OrdersController(SalePortalDbConnection context, ITranslator translator)
         {
             _context = context;
+            _translator = translator;
         }
 
         // GET: api/Orders
@@ -73,6 +76,7 @@ namespace WebApiForSalePortal.Controllers
             {
                 return BadRequest();
             }
+            
             commodityOrderEntity.Customer = customer;
             commodityOrderEntity.Commodity = commodity;
             commodityOrderEntity.CommodityOwner= commodityOwner;
@@ -110,6 +114,11 @@ namespace WebApiForSalePortal.Controllers
             if (customer == null || commodity == null || commodityOwner == null)
             {
                 return BadRequest();
+            }
+            if (commodityOrderEntity.Delivery.Contains("Nova"))
+            {
+                var delivary = await _translator.TranslateAsync("en", "uk", commodityOrderEntity.Delivery);
+                commodityOrderEntity.Delivery = delivary;
             }
             commodityOrderEntity.Customer = customer;
             commodityOrderEntity.Commodity= commodity;

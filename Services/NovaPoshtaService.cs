@@ -2,6 +2,7 @@
 using System.Text;
 using WebApiForSalePortal.Entities.NovaOoshtaEntities;
 using WebApiForSalePortal.Entities.NovaPoshtaEntities;
+using WebApiForSalePortal.Entities.TranslatorEntity;
 
 namespace WebApiForSalePortal.Services
 {
@@ -10,15 +11,18 @@ namespace WebApiForSalePortal.Services
         private readonly string _novaPoshtaUrl;
         private readonly string _novaPoshtaApiKey;
         private readonly IConfiguration _configuration;
+        
         public NovaPoshtaService(IConfiguration configuration)
         {
             _configuration = configuration;
             _novaPoshtaUrl = _configuration.GetSection("novaposhtaURL").Value;
             _novaPoshtaApiKey = _configuration.GetSection("novaposhtaApiKey").Value;
+            
 
         }
         public async ValueTask<List<Datum>> GetPostOfficesAsync(string cityName)
         {
+            
             List<Datum> PostOffices = new List<Datum>();
 
             var methodProperties = new MethodProperties();
